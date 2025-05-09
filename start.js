@@ -1,3 +1,6 @@
+//git add .
+//git commit -m "message"
+//git push origin main
 import { PlayerMovement } from "./movement.js";
 import { damageSlime, Slime } from "./slime.js";
 import { Goblet, grabGoblet } from "./goblet.js";
