@@ -9,31 +9,31 @@ export class Start extends Phaser.Scene {
         super('Start');
     }
     preload(){
-        this.load.spritesheet("player", "/rouge_like/assets/Player.png", {
+        this.load.spritesheet("player", "/assets/Player.png", {
             frameWidth: 32, 
             frameHeight: 32
         })
-        this.load.spritesheet("slime", "/rouge_like/assets/Slime.png", {
+        this.load.spritesheet("slime", "/assets/Slime.png", {
             frameWidth: 32, 
             frameHeight: 32
         })
-        this.load.spritesheet('grassTile', "/rouge_like/assets/Grass_Middle.png", {
+        this.load.spritesheet('grassTile', "/assets/Grass_Middle.png", {
             frameWidth: 32, 
             frameHeight: 32
         })
-        this.load.spritesheet('goblet', "/rouge_like/assets/Goblet.png", {
+        this.load.spritesheet('goblet', "/assets/Goblet.png", {
             frameWidth: 32, 
             frameHeight: 32
         })
-        this.load.spritesheet('waterTile', "/rouge_like/assets/Water_Middle.png", {
+        this.load.spritesheet('waterTile', "/assets/Water_Middle.png", {
             frameWidth: 32, 
             frameHeight: 32
         });
-        this.load.spritesheet('arrow', '/rouge_like/assets/Arrow.png', {
+        this.load.spritesheet('arrow', '/assets/Arrow.png', {
             frameWidth: 32, 
             frameHeight: 32
         });
-        this.load.spritesheet('waterEdge', '/rouge_like/assets/Water_Tile', {
+        this.load.spritesheet('waterEdge', '/assets/Water_Tile', {
             frameWidth: 32,
             frameHeight: 32
         })
@@ -130,7 +130,7 @@ export class Start extends Phaser.Scene {
         });
         this.anims.create({
             key: "rightWaterEdge",
-            frames: this.anims.generateFrameNames('waterEdgea')
+            frames: this.anims.generateFrameNames('waterEdge')
         })
         this.animation = "idleDown"
         //this.add.image(200, 100, "grassTile").setScale(4)
