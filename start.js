@@ -4,7 +4,7 @@
 import { PlayerMovement } from "./movement.js";
 import { damageSlime, Slime } from "./slime.js";
 import { Goblet, grabGoblet } from "./goblet.js";
-import { Water } from "./terrain.js"
+import { Water, RightWaterEdge } from "./terrain.js"
 import { Arrow } from "./arrow.js"
 export class Start extends Phaser.Scene {
 
@@ -51,6 +51,8 @@ export class Start extends Phaser.Scene {
         this.gobletGroup = this.physics.add.group();
         this.waterTiles = [];
         this.waterGroup = this.physics.add.staticGroup();
+        this.rightWaterEdges = [];
+        this.rightWaterEdgeGroup = this.physics.add.staticGroup();
         this.arrows = [];
         this.arrowGroup = this.physics.add.group();
         this.anims.create({
@@ -135,32 +137,33 @@ export class Start extends Phaser.Scene {
             key: "rightWaterEdge",
             frames: this.anims.generateFrameNames('waterEdge')
         })
+        //player code
         this.animation = "idleDown"
-        //this.add.image(200, 100, "grassTile").setScale(4)
         this.player = this.physics.add.sprite(100, 100, "player");
         this.player.body.setSize(16, 10);
         this.player.body.offset.y = 13
-        this.goblets.push(new Goblet(this, grid(1), grid(0)))
-        this.goblets.push(new Goblet(this, grid(-1), grid(0)))
-        this.slimes.push(new Slime(this, grid(5), grid(5), this.player));
-        this.slimes.push(new Slime(this, grid(4), grid(5), this.player));
-        this.slimes.push(new Slime(this, grid(3), grid(5), this.player));
-        /*for (let x = 10; x < 20; x++){
-            for (let y = 10; y < 20; y++){
-                this.slimes.push(new Slime(this, grid(x), grid(y), this.player))
-            }
-        }*/
-        this.slimes.forEach(slime => this.slimeHealth.push(10));
-        this.goblets.forEach(goblet => this.gobletGroup.add(goblet.sprite));
-        this.waterTiles.push(new Water(this, grid(-2), grid(1), this.player));
-        this.waterTiles.push(new Water(this, grid(-3), grid(1), this.player));
         this.player.anims.play("idleDown");
         this.player.setScale(4)
         this.playerMovement = new PlayerMovement(this, this.player);
+        this.shootTimer = 2;
+        //pickupable items code
+        this.goblets.push(new Goblet(this, grid(1), grid(0)))
+        this.goblets.push(new Goblet(this, grid(-1), grid(0)))
+        //mob code
+        this.slimes.push(new Slime(this, grid(5), grid(5), this.player));
+        this.slimes.push(new Slime(this, grid(4), grid(5), this.player));
+        this.slimes.push(new Slime(this, grid(3), grid(5), this.player));
+        this.slimes.forEach(slime => this.slimeHealth.push(10));
+        this.slimes.forEach(slime => this.slimeGroup.add(slime.sprite));
+        this.goblets.forEach(goblet => this.gobletGroup.add(goblet.sprite));
+        //terrain
+        this.waterTiles.push(new Water(this, grid(-2), grid(1), this.player));
+        this.waterTiles.push(new Water(this, grid(-3), grid(1), this.player));
+        //player colliders
         this.physics.add.collider(this.player, this.waterGroup);
         this.physics.add.collider(this.slimeGroup, this.waterGroup);
         this.physics.add.collider(this.slimeGroup, this.slimeGroup);
-        //this.physics.add.collider(this.player, this.slimeGroup);
+        //overlap colliders
         this.physics.add.overlap(
             this.playerMovement.attackHitbox,
             this.slimeGroup,
@@ -223,11 +226,6 @@ export class Start extends Phaser.Scene {
             null, 
             this
         );
-        this.slimes.forEach(slime => this.slimeGroup.add(slime.sprite));
-        console.log(this.slimeGroup)
-        console.log(this.slimeGroup)
-        console.log(this.slimeHealth)
-        this.shootTimer = 2;
     }
     update(){
         this.cameras.main.startFollow(this.player);
