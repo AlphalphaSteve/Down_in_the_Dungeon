@@ -4,7 +4,7 @@
 import { PlayerMovement } from "./movement.js";
 import { damageSlime, Slime } from "./slime.js";
 import { Goblet, grabGoblet } from "./goblet.js";
-import { Water, RightWaterEdge } from "./terrain.js"
+import { Water, WaterEdge, GrassTile } from "./terrain.js"
 import { Arrow } from "./arrow.js"
 export class Start extends Phaser.Scene {
 
@@ -36,14 +36,17 @@ export class Start extends Phaser.Scene {
             frameWidth: 32, 
             frameHeight: 32
         });
-        this.load.spritesheet('waterEdge', '/assets/Water_Tile', {
-            frameWidth: 32,
-            frameHeight: 32
+        this.load.spritesheet('waterEdge', '/assets/Water_Tile.png', {
+            frameWidth: 16,
+            frameHeight: 16
         })
     }
 
     create(){
+        //keyboard keys
         this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        //collider groups
         this.slimes = [];
         this.slimeGroup = this.physics.add.group();
         this.slimeHealth = [];
@@ -51,10 +54,10 @@ export class Start extends Phaser.Scene {
         this.gobletGroup = this.physics.add.group();
         this.waterTiles = [];
         this.waterGroup = this.physics.add.staticGroup();
-        this.rightWaterEdges = [];
-        this.rightWaterEdgeGroup = this.physics.add.staticGroup();
         this.arrows = [];
         this.arrowGroup = this.physics.add.group();
+        this.grassTiles = [];
+        //animations
         this.anims.create({
             key: "idleDown", 
             frames: this.anims.generateFrameNumbers('player', { start: 0, end: 5}),
@@ -135,8 +138,53 @@ export class Start extends Phaser.Scene {
         });
         this.anims.create({
             key: "rightWaterEdge",
-            frames: this.anims.generateFrameNames('waterEdge')
+            frames: this.anims.generateFrameNames('waterEdge', { start: 5, end: 5}),
+            frameRate: 0,
+            repeat: 0
         })
+        this.anims.create({
+            key: "leftWaterEdge",
+            frames: this.anims.generateFrameNames('waterEdge', { start: 3, end: 3}),
+            frameRate: 0,
+            repeat: 0
+        })
+        this.anims.create({
+            key: "topWaterEdge",
+            frames: this.anims.generateFrameNames('waterEdge', { start: 1, end: 1}),
+            frameRate: 0,
+            repeat: 0
+        })
+        this.anims.create({
+            key: "bottomWaterEdge",
+            frames: this.anims.generateFrameNames('waterEdge', { start: 7, end: 7}),
+            frameRate: 0,
+            repeat: 0
+        })
+        //drawing grass
+        for (let x = -50; x < 50; x++){
+            for (let y = -50; y < 50; y++){
+                new GrassTile(this, grid(x), grid(y));
+            }
+        }
+        //pickupable items code
+        this.goblets.push(new Goblet(this, grid(1), grid(0)))
+        this.goblets.push(new Goblet(this, grid(-1), grid(0)))
+        //mob code
+        /*this.slimes.push(new Slime(this, grid(5), grid(5), this.player));
+        this.slimes.push(new Slime(this, grid(4), grid(5), this.player));
+        this.slimes.push(new Slime(this, grid(3), grid(5), this.player));*/
+        this.slimes.forEach(slime => this.slimeHealth.push(10));
+        this.slimes.forEach(slime => this.slimeGroup.add(slime.sprite));
+        this.goblets.forEach(goblet => this.gobletGroup.add(goblet.sprite));
+        //terrain
+        this.waterTiles.push(new Water(this, grid(-2), grid(1)));
+        this.waterTiles.push(new Water(this, grid(-3), grid(1)));
+        new WaterEdge(this, grid(-1), grid(1), "rightWaterEdge");
+        new WaterEdge(this, grid(-4), grid(1), "leftWaterEdge");
+        new WaterEdge(this, grid(-2), grid(0), "topWaterEdge")
+        new WaterEdge(this, grid(-3), grid(0), "topWaterEdge")
+        new WaterEdge(this, grid(-3), grid(2), "bottomWaterEdge")
+        new WaterEdge(this, grid(-2), grid(2), "bottomWaterEdge")
         //player code
         this.animation = "idleDown"
         this.player = this.physics.add.sprite(100, 100, "player");
@@ -146,19 +194,6 @@ export class Start extends Phaser.Scene {
         this.player.setScale(4)
         this.playerMovement = new PlayerMovement(this, this.player);
         this.shootTimer = 2;
-        //pickupable items code
-        this.goblets.push(new Goblet(this, grid(1), grid(0)))
-        this.goblets.push(new Goblet(this, grid(-1), grid(0)))
-        //mob code
-        this.slimes.push(new Slime(this, grid(5), grid(5), this.player));
-        this.slimes.push(new Slime(this, grid(4), grid(5), this.player));
-        this.slimes.push(new Slime(this, grid(3), grid(5), this.player));
-        this.slimes.forEach(slime => this.slimeHealth.push(10));
-        this.slimes.forEach(slime => this.slimeGroup.add(slime.sprite));
-        this.goblets.forEach(goblet => this.gobletGroup.add(goblet.sprite));
-        //terrain
-        this.waterTiles.push(new Water(this, grid(-2), grid(1), this.player));
-        this.waterTiles.push(new Water(this, grid(-3), grid(1), this.player));
         //player colliders
         this.physics.add.collider(this.player, this.waterGroup);
         this.physics.add.collider(this.slimeGroup, this.waterGroup);
