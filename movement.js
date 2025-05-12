@@ -1,7 +1,9 @@
 let attackTimer = 0
 let isAttacking = false
+import { Start } from "./start.js";
 export class PlayerMovement {
     constructor(scene, player) {
+        this.start = Start;
         this.scene = scene;
         this.player = player;
         this.currentAnim = "idle";
@@ -14,8 +16,9 @@ export class PlayerMovement {
         this.direction = "down"
         this.player.setDepth(1);
         this.attackHitbox = this.scene.add.rectangle(-100, -100, 96, 96, 0xff0000, 0);
-        this.healthBarBack = this.scene.add.rectangle(this.player.x, this.player.y, this.health*2 + 10, 20, 0x000000, 1);
-        this.healthBar = this.scene.add.rectangle(this.player.x, this.player.y, this.health*2, 10, 0xFF0000, 1);
+        this.healthBarBack = this.scene.add.rectangle(0, 720, this.health*2 + 10, 20, 0x000000, 1);
+        this.healthBar = this.scene.add.rectangle(0, 720, this.health*2, 10, 0xFF0000, 1);
+        //this.scene.main.camera.ignore(this.healthBar);
         this.scene.physics.add.existing(this.attackHitbox);
         this.attackHitbox.body.enable = false;
         this.player.on('animationcomplete', (animation) => {
@@ -36,10 +39,10 @@ export class PlayerMovement {
         if (this.health > 20){
             this.health = 20;
         }
-        this.healthBar.x = this.player.x - 2;
-        this.healthBar.y = this.player.y - 64;
-        this.healthBarBack.x = this.player.x - 2;
-        this.healthBarBack.y = this.player.y - 64;
+        //this.healthBar.x = this.player.x - 2;
+        //this.healthBar.y = this.player.y - 64;
+        //this.healthBarBack.x = this.player.x - 2;
+        //this.healthBarBack.y = this.player.y - 64;
         this.healthBar.width = this.health*2;
         if (this.keySPACE.isDown && attackTimer <= 0 && !isAttacking){
             this.attack()

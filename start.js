@@ -160,6 +160,30 @@ export class Start extends Phaser.Scene {
             frameRate: 0,
             repeat: 0
         })
+        this.anims.create({
+            key: "bottomLeftWaterCorner",
+            frames: this.anims.generateFrameNames('waterEdge', { start: 6, end: 6}),
+            frameRate: 0,
+            repeat: 0
+        })
+        this.anims.create({
+            key: "bottomRightWaterCorner",
+            frames: this.anims.generateFrameNames('waterEdge', { start: 8, end: 8}),
+            frameRate: 0,
+            repeat: 0
+        })
+        this.anims.create({
+            key: "topLeftWaterCorner",
+            frames: this.anims.generateFrameNames('waterEdge', { start: 0, end: 0}),
+            frameRate: 0,
+            repeat: 0
+        })
+        this.anims.create({
+            key: "topRightWaterCorner",
+            frames: this.anims.generateFrameNames('waterEdge', { start: 2, end: 2}),
+            frameRate: 0,
+            repeat: 0
+        })
         //drawing grass
         for (let x = -50; x < 50; x++){
             for (let y = -50; y < 50; y++){
@@ -168,7 +192,7 @@ export class Start extends Phaser.Scene {
         }
         //pickupable items code
         this.goblets.push(new Goblet(this, grid(1), grid(0)))
-        this.goblets.push(new Goblet(this, grid(-1), grid(0)))
+        this.goblets.push(new Goblet(this, grid(2), grid(0)))
         //mob code
         /*this.slimes.push(new Slime(this, grid(5), grid(5), this.player));
         this.slimes.push(new Slime(this, grid(4), grid(5), this.player));
@@ -181,10 +205,14 @@ export class Start extends Phaser.Scene {
         this.waterTiles.push(new Water(this, grid(-3), grid(1)));
         new WaterEdge(this, grid(-1), grid(1), "rightWaterEdge");
         new WaterEdge(this, grid(-4), grid(1), "leftWaterEdge");
-        new WaterEdge(this, grid(-2), grid(0), "topWaterEdge")
-        new WaterEdge(this, grid(-3), grid(0), "topWaterEdge")
-        new WaterEdge(this, grid(-3), grid(2), "bottomWaterEdge")
-        new WaterEdge(this, grid(-2), grid(2), "bottomWaterEdge")
+        new WaterEdge(this, grid(-2), grid(0), "topWaterEdge");
+        new WaterEdge(this, grid(-3), grid(0), "topWaterEdge");
+        new WaterEdge(this, grid(-3), grid(2), "bottomWaterEdge");
+        new WaterEdge(this, grid(-2), grid(2), "bottomWaterEdge");
+        new WaterEdge(this, grid(-4), grid(2), "bottomLeftWaterCorner");
+        new WaterEdge(this, grid(-1), grid(2), "bottomRightWaterCorner");
+        new WaterEdge(this, grid(-4), grid(0), "topLeftWaterCorner");
+        new WaterEdge(this, grid(-1), grid(0), "topRightWaterCorner")
         //player code
         this.animation = "idleDown"
         this.player = this.physics.add.sprite(100, 100, "player");
@@ -263,7 +291,7 @@ export class Start extends Phaser.Scene {
         );
     }
     update(){
-        this.cameras.main.startFollow(this.player);
+        this.camera = this.cameras.main.startFollow(this.player);
         this.shootTimer -= 1/60;
         this.playerMovement.update()
         for (let slime of this.slimes) {
