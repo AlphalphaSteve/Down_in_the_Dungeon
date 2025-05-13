@@ -478,6 +478,7 @@ export class Start extends Phaser.Scene {
         this.physics.add.collider(this.slimeGroup, this.slimeGroup);
         this.physics.add.collider(this.player, this.cliffGroup);
         this.physics.add.collider(this.player, this.houseGroup);
+        this.physics.add.collider(this.slimeGroup, this.houseGroup);
         //mob code
         this.slimes.push(new Slime(this, grid(14), grid(5), this.player));
         this.slimes.push(new Slime(this, grid(15), grid(6), this.player));
@@ -498,7 +499,7 @@ export class Start extends Phaser.Scene {
             (attackHitbox, slimeSprite) => {
                 const hitSlime = this.slimes.find(slime => slime.sprite === slimeSprite);
                 const index = this.slimes.indexOf(hitSlime);
-                damageSlime(index, this.slimeHealth, this.slimes, 50)
+                damageSlime(index, this.slimeHealth, this.slimes, 5)
                 console.log(this.slimeHealth);
                 attackHitbox.body.enable = false;
             },
