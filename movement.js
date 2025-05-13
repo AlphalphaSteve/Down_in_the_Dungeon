@@ -16,10 +16,10 @@ export class PlayerMovement {
         this.direction = "down"
         this.player.setDepth(1);
         this.attackHitbox = this.scene.add.rectangle(-100, -100, 96, 96, 0xff0000, 0);
-        this.healthBarBack = this.scene.add.rectangle(0, 720, this.health*2 + 10, 20, 0x000000, 1);
-        this.healthBar = this.scene.add.rectangle(0, 720, this.health*2, 10, 0xFF0000, 1);
-        //this.scene.main.camera.ignore(this.healthBar);
+        this.healthBarBack = this.scene.add.rectangle(0, 0, this.health*2 + 10, 20, 0x000000, 1);
+        this.healthBar = this.scene.add.rectangle(0, 0, this.health*2, 10, 0xFF0000, 1);
         this.scene.physics.add.existing(this.attackHitbox);
+        console.log(this.healthBar.y)
         this.attackHitbox.body.enable = false;
         this.player.on('animationcomplete', (animation) => {
             if (animation.key.startsWith('attack')) {
@@ -37,12 +37,12 @@ export class PlayerMovement {
             this.scene.scene.restart();
         }
         if (this.health > 20){
-            this.health = 20;
+            this.health -= 0.05;
         }
-        //this.healthBar.x = this.player.x - 2;
-        //this.healthBar.y = this.player.y - 64;
-        //this.healthBarBack.x = this.player.x - 2;
-        //this.healthBarBack.y = this.player.y - 64;
+        this.healthBar.x = this.player.x - 2;
+        this.healthBar.y = this.player.y - 64;
+        this.healthBarBack.x = this.player.x - 2;
+        this.healthBarBack.y = this.player.y - 64;
         this.healthBar.width = this.health*2;
         if (this.keySPACE.isDown && attackTimer <= 0 && !isAttacking){
             this.attack()

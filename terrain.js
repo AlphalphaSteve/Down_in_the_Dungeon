@@ -21,3 +21,28 @@ export class GrassTile {
         this.tile.setScale(4);
     }
 }
+export class Cliff {
+    constructor(scene, x, y, animation){
+        this.scene = scene;
+        this.tile = scene.add.sprite(x, y, "cliffTile");
+        this.tile.anims.play(animation);
+        this.tile.setScale(4);
+        this.scene.cliffGroup.add(this.tile);
+    }
+}
+export class House {
+    constructor(scene, x, y){
+        this.scene = scene;
+        this.tile = scene.add.sprite(x, y, "house");
+        this.tile.setScale(4);
+        this.scene.houseGroup.add(this.tile);
+    }
+}
+export class Path {
+    constructor(scene, x, y, animation){
+        this.scene = scene;
+        this.tile = scene.add.sprite(x, y, "pathTile");
+        this.tile.anims.play(animation);
+        this.tile.setScale(4);
+    }
+}
