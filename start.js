@@ -87,6 +87,7 @@ export class Start extends Phaser.Scene {
         this.grassTiles = [];
         this.cliffGroup = this.physics.add.staticGroup();
         this.houseGroup = this.physics.add.staticGroup();
+        this.swordGroup = this.physics.add.staticGroup();
         //animations
         this.anims.create({
             key: "idleDown", 
